@@ -3,12 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>合约交易开单条件</title>
+    <title>合约交易开单</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            display: flex;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .left-panel {
+            flex: 1; /* 左侧部分占据一半宽度 */
             text-align: center;
-            margin-top: 50px;
+        }
+
+        .right-panel {
+            flex: 1; /* 右侧部分占据一半宽度 */
+            padding-left: 20px;
         }
 
         button {
@@ -18,61 +29,150 @@
             cursor: pointer;
         }
 
-        #question, #answer {
-            display: none;
+        #options, #stopLossButton, #furtherResult, #openTradePrompt {
+            display: none; /* 默认隐藏 */
             margin-top: 20px;
+        }
+
+        #prompt {
+            display: none; /* 默认隐藏提示文字 */
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        #result {
+            display: none; /* 默认隐藏选择结果的提示 */
+            font-size: 16px;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
         }
     </style>
 </head>
 <body>
 
-    <h1>合约交易</h1>
-    <p>开单必须满足以下条件<br>否则绝不能开单</p>
+    <div class="left-panel">
+        <h1>合约交易</h1>
+        <p>开单必须满足以下条件<br>否则绝不能开单</p>
 
-    <!-- 开单按钮 -->
-    <button id="openTradeBtn">开单</button>
+        <!-- 开单按钮 -->
+        <button id="openTradeBtn">开单</button>
 
-    <!-- 看日线问题 -->
-    <div id="question">
-        <p>看日线</p>
-        <button id="upTrendBtn">上升趋势</button>
-        <button id="downTrendBtn">下降趋势</button>
+        <!-- 提示文字 -->
+        <div id="prompt">看日线，是上升还是下降趋势？</div>
+
+        <!-- 上升趋势和下降趋势选项 -->
+        <div id="options">
+            <button id="optionA">上升趋势: 多单</button>
+            <button id="optionB">下降趋势: 空单</button>
+        </div>
+
+        <!-- 结果提示 -->
+        <div id="result"></div>
+
+        <!-- 止损按钮 -->
+        <div id="stopLossButton">
+            <button id="stopLossBtn">止损</button>
+        </div>
+
+        <!-- 最终提示 -->
+        <div id="furtherResult"></div>
+
+        <!-- 开单提示 -->
+        <div id="openTradePrompt"></div>
     </div>
 
-    <!-- 回答多单或空单 -->
-    <div id="answer">
-        <button id="longBtn" style="display: none;">回答多单</button>
-        <button id="shortBtn" style="display: none;">回答空单</button>
+    <div class="right-panel">
+        <!-- 输入表格 -->
+        <table>
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>日期</th>
+                    <th>开单价格</th>
+                    <th>止损价格</th>
+                    <th>盈亏结果</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- 生成10行表格 -->
+                ${Array.from({length: 10}, (_, index) => `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td><input type="date"></td>
+                    <td><input type="number" step="0.01"></td>
+                    <td><input type="number" step="0.01"></td>
+                    <td><input type="text"></td>
+                </tr>
+                `).join('')}
+            </tbody>
+        </table>
     </div>
 
     <script>
         // 获取页面元素
         const openTradeBtn = document.getElementById('openTradeBtn');
-        const questionDiv = document.getElementById('question');
-        const answerDiv = document.getElementById('answer');
-        const upTrendBtn = document.getElementById('upTrendBtn');
-        const downTrendBtn = document.getElementById('downTrendBtn');
-        const longBtn = document.getElementById('longBtn');
-        const shortBtn = document.getElementById('shortBtn');
+        const optionsDiv = document.getElementById('options');
+        const optionA = document.getElementById('optionA');
+        const optionB = document.getElementById('optionB');
+        const promptDiv = document.getElementById('prompt');
+        const resultDiv = document.getElementById('result');
+        const stopLossButtonDiv = document.getElementById('stopLossButton');
+        const furtherResultDiv = document.getElementById('furtherResult');
+        const openTradePromptDiv = document.getElementById('openTradePrompt');
 
-        // 点击“开单”按钮显示问题
+        // 点击“开单”按钮显示提示文字和选项
         openTradeBtn.addEventListener('click', function() {
-            questionDiv.style.display = 'block'; // 显示问题
-            answerDiv.style.display = 'none'; // 隐藏回答按钮，重新开始
-            longBtn.style.display = 'none'; // 隐藏多单按钮
-            shortBtn.style.display = 'none'; // 隐藏空单按钮
+            promptDiv.style.display = 'block'; // 显示提示文字
+            optionsDiv.style.display = 'block'; // 显示选项A和B
+            resultDiv.style.display = 'none'; // 隐藏之前的结果提示
+            stopLossButtonDiv.style.display = 'none'; // 隐藏“止损”按钮
+            furtherResultDiv.style.display = 'none'; // 隐藏进一步的提示
+            openTradePromptDiv.style.display = 'none'; // 隐藏开单提示
         });
 
-        // 点击“上升趋势”显示“回答多单”
-        upTrendBtn.addEventListener('click', function() {
-            longBtn.style.display = 'inline-block'; // 显示多单按钮
-            shortBtn.style.display = 'none'; // 隐藏空单按钮
+        // 点击选项A（上升趋势: 多单）
+        optionA.addEventListener('click', function() {
+            resultDiv.style.display = 'block'; // 显示结果提示
+            resultDiv.innerHTML = '多单要开在四小时线整理的下端（支撑区）/向上突破区';
+            stopLossButtonDiv.style.display = 'block'; // 显示“止损”按钮
+            furtherResultDiv.style.display = 'none'; // 隐藏之前的提示
+            openTradePromptDiv.style.display = 'none'; // 隐藏开单提示
         });
 
-        // 点击“下降趋势”显示“回答空单”
-        downTrendBtn.addEventListener('click', function() {
-            shortBtn.style.display = 'inline-block'; // 显示空单按钮
-            longBtn.style.display = 'none'; // 隐藏多单按钮
+        // 点击选项B（下降趋势: 空单）
+        optionB.addEventListener('click', function() {
+            resultDiv.style.display = 'block'; // 显示结果提示
+            resultDiv.innerHTML = '空单要开在四小时线整理的上端（压力区）/向下突破区';
+            stopLossButtonDiv.style.display = 'block'; // 显示“止损”按钮
+            furtherResultDiv.style.display = 'none'; // 隐藏之前的提示
+            openTradePromptDiv.style.display = 'none'; // 隐藏开单提示
+        });
+
+        // 点击“止损”按钮后的逻辑
+        document.getElementById('stopLossBtn').addEventListener('click', function() {
+            furtherResultDiv.style.display = 'block'; // 显示进一步的提示
+            furtherResultDiv.innerHTML = `
+                <p>突破单的止损放在突破前整理的低点/高点</p>
+                <p>支撑压力单的止损放在K线实体跌破/突破后的位置</p>
+            `;
+            openTradePromptDiv.style.display = 'block'; // 显示“可以开单”提示
+            openTradePromptDiv.innerHTML = '<p>可以开单</p>';
         });
     </script>
 
