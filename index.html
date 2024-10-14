@@ -109,79 +109,21 @@
                     <th>盈亏结果</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td><input type="date"></td>
-                    <td><input type="number" step="0.01"></td>
-                    <td><input type="number" step="0.01"></td>
-                    <td><input type="text"></td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td><input type="date"></td>
-                    <td><input type="number" step="0.01"></td>
-                    <td><input type="number" step="0.01"></td>
-                    <td><input type="text"></td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td><input type="date"></td>
-                    <td><input type="number" step="0.01"></td>
-                    <td><input type="number" step="0.01"></td>
-                    <td><input type="text"></td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td><input type="date"></td>
-                    <td><input type="number" step="0.01"></td>
-                    <td><input type="number" step="0.01"></td>
-                    <td><input type="text"></td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td><input type="date"></td>
-                    <td><input type="number" step="0.01"></td>
-                    <td><input type="number" step="0.01"></td>
-                    <td><input type="text"></td>
-                </tr>
-                <tr>
-                    <td>6</td>
-                    <td><input type="date"></td>
-                    <td><input type="number" step="0.01"></td>
-                    <td><input type="number" step="0.01"></td>
-                    <td><input type="text"></td>
-                </tr>
-                <tr>
-                    <td>7</td>
-                    <td><input type="date"></td>
-                    <td><input type="number" step="0.01"></td>
-                    <td><input type="number" step="0.01"></td>
-                    <td><input type="text"></td>
-                </tr>
-                <tr>
-                    <td>8</td>
-                    <td><input type="date"></td>
-                    <td><input type="number" step="0.01"></td>
-                    <td><input type="number" step="0.01"></td>
-                    <td><input type="text"></td>
-                </tr>
-                <tr>
-                    <td>9</td>
-                    <td><input type="date"></td>
-                    <td><input type="number" step="0.01"></td>
-                    <td><input type="number" step="0.01"></td>
-                    <td><input type="text"></td>
-                </tr>
-                <tr>
-                    <td>10</td>
-                    <td><input type="date"></td>
-                    <td><input type="number" step="0.01"></td>
-                    <td><input type="number" step="0.01"></td>
-                    <td><input type="text"></td>
-                </tr>
+            <tbody id="tradeDataBody">
+                <!-- 预先填充10行 -->
+                ${[...Array(10).keys()].map(i => `
+                    <tr>
+                        <td>${i + 1}</td>
+                        <td><input type="date" class="date-input"></td>
+                        <td><input type="number" step="0.01" class="open-price-input"></td>
+                        <td><input type="number" step="0.01" class="stop-loss-input"></td>
+                        <td><input type="text" class="profit-loss-input"></td>
+                    </tr>`).join('')}
             </tbody>
         </table>
+
+        <button id="saveDataBtn">保存数据</button>
+        <button id="clearDataBtn">清空数据</button>
     </div>
 
     <script>
@@ -195,6 +137,7 @@
         const stopLossButtonDiv = document.getElementById('stopLossButton');
         const furtherResultDiv = document.getElementById('furtherResult');
         const openTradePromptDiv = document.getElementById('openTradePrompt');
+        const tradeDataBody = document.getElementById('tradeDataBody');
 
         // 点击“开单”按钮显示提示文字和选项
         openTradeBtn.addEventListener('click', function() {
@@ -234,6 +177,67 @@
             openTradePromptDiv.style.display = 'block'; // 显示“可以开单”提示
             openTradePromptDiv.innerHTML = '<p>可以开单</p>';
         });
+
+        // 加载保存的数据到表格
+        function loadData() {
+            for (let i = 0; i < 10; i++) {
+                const dateInput = document.querySelectorAll('.date-input')[i];
+                const openPriceInput = document.querySelectorAll('.open-price-input')[i];
+                const stopLossInput = document.querySelectorAll('.stop-loss-input')[i];
+                const profitLossInput = document.querySelectorAll('.profit-loss-input')[i];
+
+                dateInput.value = localStorage.getItem(`date-${i}`) || '';
+                openPriceInput.value = localStorage.getItem(`openPrice-${i}`) || '';
+                stopLossInput.value = localStorage.getItem(`stopLoss-${i}`) || '';
+                profitLossInput.value = localStorage.getItem(`profitLoss-${i}`) || '';
+            }
+        }
+
+        // 保存表格中的数据到localStorage
+        function saveData() {
+            for (let i = 0; i < 10; i++) {
+                const dateInput = document.querySelectorAll('.date-input')[i];
+                const openPriceInput = document.querySelectorAll('.open-price-input')[i];
+                const stopLossInput = document.querySelectorAll('.stop-loss-input')[i];
+                const profitLossInput = document.querySelectorAll('.profit-loss-input')[i];
+
+                localStorage.setItem(`date-${i}`, dateInput.value);
+                localStorage.setItem(`openPrice-${i}`, openPriceInput.value);
+                localStorage.setItem(`stopLoss-${i}`, stopLossInput.value);
+                localStorage.setItem(`profitLoss-${i}`, profitLossInput.value);
+            }
+            alert('数据已保存');
+        }
+
+        // 清空表格中的数据和localStorage
+        function clearData() {
+            for (let i = 0; i < 10; i++) {
+                const dateInput = document.querySelectorAll('.date-input')[i];
+                const openPriceInput = document.querySelectorAll('.open-price-input')[i];
+                const stopLossInput = document.querySelectorAll('.stop-loss-input')[i];
+                const profitLossInput = document.querySelectorAll('.profit-loss-input')[i];
+
+                dateInput.value = '';
+                openPriceInput.value = '';
+                stopLossInput.value = '';
+                profitLossInput.value = '';
+
+                localStorage.removeItem(`date-${i}`);
+                localStorage.removeItem(`openPrice-${i}`);
+                localStorage.removeItem(`stopLoss-${i}`);
+                localStorage.removeItem(`profitLoss-${i}`);
+            }
+            alert('数据已清空');
+        }
+
+        // 页面加载时加载数据
+        window.onload = loadData;
+
+        // 保存按钮点击事件
+        document.getElementById('saveDataBtn').addEventListener('click', saveData);
+
+        // 清空按钮点击事件
+        document.getElementById('clearDataBtn').addEventListener('click', clearData);
     </script>
 
 </body>
