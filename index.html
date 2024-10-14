@@ -1,16 +1,80 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Web Page</title>
-    <!-- 关联 CSS 文件 -->
-    <link rel="stylesheet" href="style.css">
+    <title>合约交易开单条件</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        #question, #answer {
+            display: none;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>goumeinilaile</h1>
-    <p>这是我用 PyCharm 编写的网页。</p>
-    <!-- 关联 JavaScript 文件 -->
-    <script src="script.js"></script>
+
+    <h1>合约交易</h1>
+    <p>开单必须满足以下条件<br>否则绝不能开单</p>
+
+    <!-- 开单按钮 -->
+    <button id="openTradeBtn">开单</button>
+
+    <!-- 看日线问题 -->
+    <div id="question">
+        <p>看日线</p>
+        <button id="upTrendBtn">上升趋势</button>
+        <button id="downTrendBtn">下降趋势</button>
+    </div>
+
+    <!-- 回答多单或空单 -->
+    <div id="answer">
+        <button id="longBtn" style="display: none;">回答多单</button>
+        <button id="shortBtn" style="display: none;">回答空单</button>
+    </div>
+
+    <script>
+        // 获取页面元素
+        const openTradeBtn = document.getElementById('openTradeBtn');
+        const questionDiv = document.getElementById('question');
+        const answerDiv = document.getElementById('answer');
+        const upTrendBtn = document.getElementById('upTrendBtn');
+        const downTrendBtn = document.getElementById('downTrendBtn');
+        const longBtn = document.getElementById('longBtn');
+        const shortBtn = document.getElementById('shortBtn');
+
+        // 点击“开单”按钮显示问题
+        openTradeBtn.addEventListener('click', function() {
+            questionDiv.style.display = 'block'; // 显示问题
+            answerDiv.style.display = 'none'; // 隐藏回答按钮，重新开始
+            longBtn.style.display = 'none'; // 隐藏多单按钮
+            shortBtn.style.display = 'none'; // 隐藏空单按钮
+        });
+
+        // 点击“上升趋势”显示“回答多单”
+        upTrendBtn.addEventListener('click', function() {
+            longBtn.style.display = 'inline-block'; // 显示多单按钮
+            shortBtn.style.display = 'none'; // 隐藏空单按钮
+        });
+
+        // 点击“下降趋势”显示“回答空单”
+        downTrendBtn.addEventListener('click', function() {
+            shortBtn.style.display = 'inline-block'; // 显示空单按钮
+            longBtn.style.display = 'none'; // 隐藏多单按钮
+        });
+    </script>
+
 </body>
 </html>
