@@ -13,12 +13,12 @@
         }
 
         .left-panel {
-            flex: 1; /* 左侧部分占据一半宽度 */
+            flex: 1;
             text-align: center;
         }
 
         .right-panel {
-            flex: 1; /* 右侧部分占据一半宽度 */
+            flex: 1;
             padding-left: 20px;
         }
 
@@ -30,18 +30,18 @@
         }
 
         #options, #stopLossButton, #furtherResult, #openTradePrompt {
-            display: none; /* 默认隐藏 */
+            display: none;
             margin-top: 20px;
         }
 
         #prompt {
-            display: none; /* 默认隐藏提示文字 */
+            display: none;
             font-size: 18px;
             margin-top: 20px;
         }
 
         #result {
-            display: none; /* 默认隐藏选择结果的提示 */
+            display: none;
             font-size: 16px;
             margin-top: 20px;
             color: #333;
@@ -90,7 +90,7 @@
             <button id="stopLossBtn">止损</button>
         </div>
 
-        <!-- 最终提示 -->
+        <!-- 止损提示 -->
         <div id="furtherResult"></div>
 
         <!-- 开单提示 -->
@@ -226,6 +226,14 @@
             stopLossButtonDiv.style.display = 'block'; // 显示“止损”按钮
             furtherResultDiv.style.display = 'none'; // 隐藏之前的提示
             openTradePromptDiv.style.display = 'none'; // 隐藏开单提示
+        });
+
+        // 点击“止损”按钮显示止损提示
+        document.getElementById('stopLossBtn').addEventListener('click', function() {
+            furtherResultDiv.style.display = 'block'; // 显示进一步的提示
+            furtherResultDiv.innerHTML = '突破单的止损放在突破前整理的低点/高点<br>支撑压力单的止损放在K线实体跌破/突破后的位置';
+            openTradePromptDiv.style.display = 'block'; // 显示可以开单提示
+            openTradePromptDiv.innerHTML = '可以开单';
         });
 
         // 保存表格数据到 localStorage
