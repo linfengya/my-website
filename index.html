@@ -110,15 +110,76 @@
                 </tr>
             </thead>
             <tbody id="tradeDataBody">
-                <!-- 预先填充10行 -->
-                ${[...Array(10).keys()].map(i => `
-                    <tr>
-                        <td>${i + 1}</td>
-                        <td><input type="date" class="date-input"></td>
-                        <td><input type="number" step="0.01" class="open-price-input"></td>
-                        <td><input type="number" step="0.01" class="stop-loss-input"></td>
-                        <td><input type="text" class="profit-loss-input"></td>
-                    </tr>`).join('')}
+                <tr>
+                    <td>1</td>
+                    <td><input type="date" class="date-input"></td>
+                    <td><input type="number" step="0.01" class="open-price-input"></td>
+                    <td><input type="number" step="0.01" class="stop-loss-input"></td>
+                    <td><input type="text" class="profit-loss-input"></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><input type="date" class="date-input"></td>
+                    <td><input type="number" step="0.01" class="open-price-input"></td>
+                    <td><input type="number" step="0.01" class="stop-loss-input"></td>
+                    <td><input type="text" class="profit-loss-input"></td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><input type="date" class="date-input"></td>
+                    <td><input type="number" step="0.01" class="open-price-input"></td>
+                    <td><input type="number" step="0.01" class="stop-loss-input"></td>
+                    <td><input type="text" class="profit-loss-input"></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><input type="date" class="date-input"></td>
+                    <td><input type="number" step="0.01" class="open-price-input"></td>
+                    <td><input type="number" step="0.01" class="stop-loss-input"></td>
+                    <td><input type="text" class="profit-loss-input"></td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td><input type="date" class="date-input"></td>
+                    <td><input type="number" step="0.01" class="open-price-input"></td>
+                    <td><input type="number" step="0.01" class="stop-loss-input"></td>
+                    <td><input type="text" class="profit-loss-input"></td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td><input type="date" class="date-input"></td>
+                    <td><input type="number" step="0.01" class="open-price-input"></td>
+                    <td><input type="number" step="0.01" class="stop-loss-input"></td>
+                    <td><input type="text" class="profit-loss-input"></td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td><input type="date" class="date-input"></td>
+                    <td><input type="number" step="0.01" class="open-price-input"></td>
+                    <td><input type="number" step="0.01" class="stop-loss-input"></td>
+                    <td><input type="text" class="profit-loss-input"></td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td><input type="date" class="date-input"></td>
+                    <td><input type="number" step="0.01" class="open-price-input"></td>
+                    <td><input type="number" step="0.01" class="stop-loss-input"></td>
+                    <td><input type="text" class="profit-loss-input"></td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td><input type="date" class="date-input"></td>
+                    <td><input type="number" step="0.01" class="open-price-input"></td>
+                    <td><input type="number" step="0.01" class="stop-loss-input"></td>
+                    <td><input type="text" class="profit-loss-input"></td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td><input type="date" class="date-input"></td>
+                    <td><input type="number" step="0.01" class="open-price-input"></td>
+                    <td><input type="number" step="0.01" class="stop-loss-input"></td>
+                    <td><input type="text" class="profit-loss-input"></td>
+                </tr>
             </tbody>
         </table>
 
@@ -167,60 +228,49 @@
             openTradePromptDiv.style.display = 'none'; // 隐藏开单提示
         });
 
-        // 点击“止损”按钮后的逻辑
-        document.getElementById('stopLossBtn').addEventListener('click', function() {
-            furtherResultDiv.style.display = 'block'; // 显示进一步的提示
-            furtherResultDiv.innerHTML = `
-                <p>突破单的止损放在突破前整理的低点/高点</p>
-                <p>支撑压力单的止损放在K线实体跌破/突破后的位置</p>
-            `;
-            openTradePromptDiv.style.display = 'block'; // 显示“可以开单”提示
-            openTradePromptDiv.innerHTML = '<p>可以开单</p>';
-        });
-
-        // 加载保存的数据到表格
-        function loadData() {
-            for (let i = 0; i < 10; i++) {
-                const dateInput = document.querySelectorAll('.date-input')[i];
-                const openPriceInput = document.querySelectorAll('.open-price-input')[i];
-                const stopLossInput = document.querySelectorAll('.stop-loss-input')[i];
-                const profitLossInput = document.querySelectorAll('.profit-loss-input')[i];
-
-                dateInput.value = localStorage.getItem(`date-${i}`) || '';
-                openPriceInput.value = localStorage.getItem(`openPrice-${i}`) || '';
-                stopLossInput.value = localStorage.getItem(`stopLoss-${i}`) || '';
-                profitLossInput.value = localStorage.getItem(`profitLoss-${i}`) || '';
-            }
-        }
-
-        // 保存表格中的数据到localStorage
+        // 保存表格数据到 localStorage
         function saveData() {
-            for (let i = 0; i < 10; i++) {
-                const dateInput = document.querySelectorAll('.date-input')[i];
-                const openPriceInput = document.querySelectorAll('.open-price-input')[i];
-                const stopLossInput = document.querySelectorAll('.stop-loss-input')[i];
-                const profitLossInput = document.querySelectorAll('.profit-loss-input')[i];
+            const dateInputs = document.querySelectorAll('.date-input');
+            const openPriceInputs = document.querySelectorAll('.open-price-input');
+            const stopLossInputs = document.querySelectorAll('.stop-loss-input');
+            const profitLossInputs = document.querySelectorAll('.profit-loss-input');
 
-                localStorage.setItem(`date-${i}`, dateInput.value);
-                localStorage.setItem(`openPrice-${i}`, openPriceInput.value);
-                localStorage.setItem(`stopLoss-${i}`, stopLossInput.value);
-                localStorage.setItem(`profitLoss-${i}`, profitLossInput.value);
+            for (let i = 0; i < 10; i++) {
+                localStorage.setItem(`date-${i}`, dateInputs[i].value);
+                localStorage.setItem(`openPrice-${i}`, openPriceInputs[i].value);
+                localStorage.setItem(`stopLoss-${i}`, stopLossInputs[i].value);
+                localStorage.setItem(`profitLoss-${i}`, profitLossInputs[i].value);
             }
             alert('数据已保存');
         }
 
-        // 清空表格中的数据和localStorage
-        function clearData() {
-            for (let i = 0; i < 10; i++) {
-                const dateInput = document.querySelectorAll('.date-input')[i];
-                const openPriceInput = document.querySelectorAll('.open-price-input')[i];
-                const stopLossInput = document.querySelectorAll('.stop-loss-input')[i];
-                const profitLossInput = document.querySelectorAll('.profit-loss-input')[i];
+        // 从 localStorage 加载表格数据
+        function loadData() {
+            const dateInputs = document.querySelectorAll('.date-input');
+            const openPriceInputs = document.querySelectorAll('.open-price-input');
+            const stopLossInputs = document.querySelectorAll('.stop-loss-input');
+            const profitLossInputs = document.querySelectorAll('.profit-loss-input');
 
-                dateInput.value = '';
-                openPriceInput.value = '';
-                stopLossInput.value = '';
-                profitLossInput.value = '';
+            for (let i = 0; i < 10; i++) {
+                dateInputs[i].value = localStorage.getItem(`date-${i}`) || '';
+                openPriceInputs[i].value = localStorage.getItem(`openPrice-${i}`) || '';
+                stopLossInputs[i].value = localStorage.getItem(`stopLoss-${i}`) || '';
+                profitLossInputs[i].value = localStorage.getItem(`profitLoss-${i}`) || '';
+            }
+        }
+
+        // 清空表格中的数据和 localStorage
+        function clearData() {
+            const dateInputs = document.querySelectorAll('.date-input');
+            const openPriceInputs = document.querySelectorAll('.open-price-input');
+            const stopLossInputs = document.querySelectorAll('.stop-loss-input');
+            const profitLossInputs = document.querySelectorAll('.profit-loss-input');
+
+            for (let i = 0; i < 10; i++) {
+                dateInputs[i].value = '';
+                openPriceInputs[i].value = '';
+                stopLossInputs[i].value = '';
+                profitLossInputs[i].value = '';
 
                 localStorage.removeItem(`date-${i}`);
                 localStorage.removeItem(`openPrice-${i}`);
